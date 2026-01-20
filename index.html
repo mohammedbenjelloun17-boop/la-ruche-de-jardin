@@ -2045,5 +2045,67 @@ ${message || "-"}
             .forEach((s) => s.classList.remove("active"));
         });
     </script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtNP6u-abKQ13HOwh4clBRRYrRCgirMQA",
+    authDomain: "avis-site-2569f.firebaseapp.com",
+    projectId: "avis-site-2569f",
+    storageBucket: "avis-site-2569f.appspot.com",
+    messagingSenderId: "930203866353",
+    appId: "1:930203866353:web:0f418e1aef1c823d204550"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.addComment = async function () {
+    const name = document.getElementById("name").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const rating = document.getElementById("rating").value;
+
+    if (!name || !message || !rating) {
+      alert("عمر جميع الخانات");
+      return;
+    }
+
+    await addDoc(collection(db, "comments"), {
+      name,
+      message,
+      rating: Number(rating),
+      createdAt: serverTimestamp()
+    });
+
+    document.getElementById("commentForm").reset();
+    loadComments();
+  };
+
+  async function loadComments() {
+    const commentsDiv = document.getElementById("comments");
+    commentsDiv.innerHTML = "";
+
+    const q = query(
+      collection(db, "comments"),
+      orderBy("createdAt", "desc")
+    );
+
+    const snapshot = await getDocs(q);
+    snapshot.forEach((doc) => {
+      const c = doc.data();
+      commentsDiv.innerHTML += `
+        <div style="border:1px solid #ddd;padding:10px;margin:10px 0">
+          <strong>${c.name}</strong> ⭐ ${c.rating}/5
+          <p>${c.message}</p>
+        </div>
+      `;
+    });
+  }
+
+  loadComments();
+</script>
+
   </body>
 </html>
+
