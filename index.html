@@ -1715,6 +1715,10 @@
 
       <!-- عرض الآراء -->
       <div id="avisList" class="avis-list"></div>
+      <input id="name" placeholder="name">
+<textarea id="message"></textarea>
+<button onclick="addComment()">Send</button>
+
     </section>
 
     <section id="reservation" class="reservation-pro">
@@ -2045,10 +2049,9 @@ ${message || "-"}
             .forEach((s) => s.classList.remove("active"));
         });
     </script>
-   <script type="module">
+ <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, serverTimestamp } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIza...",
@@ -2059,29 +2062,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ADD COMMENT
-async function addComment() {
+window.addComment = async function () {
   const name = document.getElementById("name").value;
   const message = document.getElementById("message").value;
-  const rating = document.getElementById("rating").value;
+
+  console.log("Clicked", name, message);
 
   await addDoc(collection(db, "comments"), {
     name: name,
     message: message,
-    rating: Number(rating),
-    createdAt: serverTimestamp()
+    createdAt: new Date()
   });
 
-  alert("Comment saved");
-}
-
-window.addComment = addComment;
+  alert("tsjlat");
+};
 </script>
-
 
 
   </body>
 </html>
+
 
 
 
