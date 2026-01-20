@@ -2105,7 +2105,100 @@ ${message || "-"}
 
   loadComments();
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    orderBy,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtNP6u-abKQ13HOwh4clBRRYrRCgirMQA",
+    authDomain: "avis-site-2569f.firebaseapp.com",
+    projectId: "avis-site-2569f",
+    storageBucket: "avis-site-2569f.appspot.com",
+    messagingSenderId: "930203866353",
+    appId: "1:930203866353:web:0f418e1aef1c823d204550"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const avisForm = document.getElementById("avisForm");
+  const avisList = document.getElementById("avisList");
+  const stars = document.querySelectorAll("#stars span");
+
+  let rating = 0;
+
+  // ⭐ stars
+  stars.forEach(star => {
+    star.addEventListener("click", () => {
+      rating = star.dataset.star;
+      stars.forEach(s => s.classList.remove("active"));
+      for (let i = 0; i < rating; i++) {
+        stars[i].classList.add("active");
+      }
+    });
+  });
+
+  // ➕ إضافة avis
+  avisForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("avisName").value;
+    const message = document.getElementById("avisMessage").value;
+
+    if (!rating) {
+      alert("Choisissez une note ⭐");
+      return;
+    }
+
+    await addDoc(collection(db, "avis"), {
+      name,
+      message,
+      rating,
+      createdAt: serverTimestamp()
+    });
+
+    avisForm.reset();
+    stars.forEach(s => s.classList.remove("active"));
+    rating = 0;
+
+    loadAvis();
+  });
+
+  // 📥 جلب avis من Firebase
+  async function loadAvis() {
+    avisList.innerHTML = "";
+
+    const q = query(
+      collection(db, "avis"),
+      orderBy("createdAt", "desc")
+    );
+
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      const a = doc.data();
+      avisList.innerHTML += `
+        <div class="avis-item">
+          <div class="name">${a.name}</div>
+          <div class="rating">${"★".repeat(a.rating)}</div>
+          <p>${a.message}</p>
+        </div>
+      `;
+    });
+  }
+
+  // 🚀 تحميل avis مع فتح الصفحة
+  loadAvis();
+</script>
 
   </body>
 </html>
+
 
