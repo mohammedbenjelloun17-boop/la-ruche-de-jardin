@@ -1247,6 +1247,25 @@
     border-radius: 8px;
     z-index: 1000;        /* باش يبقى فوق كلشي */
 }
+.navbar {
+  position: fixed;   /* هادي هي السِّر */
+  top: 0;            /* تبقى لفوق */
+  left: 0;
+  width: 100%;
+  background: black;
+  padding: 15px;
+}
+
+.navbar a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+/* باش المحتوى ما يطلعش تحت navbar */
+.content {
+  margin-top: 70px;
+}
 
     </style>
     <script type="application/ld+json">
@@ -1273,6 +1292,20 @@
     </script>
   </head>
   <body>
+    <div class="navbar">
+  <a href="#">Home</a>
+  <a href="#">Menu</a>
+  <a href="#">Contact</a>
+</div>
+
+<div class="content">
+  <p>Scroll ltaht باش تشوف...</p>
+  <p>Scroll ltaht باش تشوف...</p>
+  <p>Scroll ltaht باش تشوف...</p>
+  <p>Scroll ltaht باش تشوف...</p>
+  <p>Scroll ltaht باش تشوف...</p>
+</div>
+
     <header id="home">
       <nav class="nav">
        <a href="#home" class="home-btn">Home</a>
