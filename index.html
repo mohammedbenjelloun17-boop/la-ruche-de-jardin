@@ -1236,6 +1236,18 @@
       .avis-item .rating {
         color: #c9a24d;
       }
+      .home-btn {
+    position: fixed;      /* يخليه ثابت */
+    top: 20px;            /* من الفوق */
+    left: 20px;           /* من اليسار */
+    background: #ff6600;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    z-index: 1000;        /* باش يبقى فوق كلشي */
+}
+
     </style>
     <script type="application/ld+json">
       {
@@ -1263,7 +1275,8 @@
   <body>
     <header id="home">
       <nav class="nav">
-        <a href="#home" class="active">Home</a>
+       <a href="#home" class="home-btn">Home</a>
+
         <a href="#menu">Menu</a>
         <a href="#gallery">Galerie</a>
         <a href="#contact">Contact</a>
@@ -2077,6 +2090,7 @@ window.addComment = async function () {
 
   </body>
 </html>
+
 
 
 
